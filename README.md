@@ -2,6 +2,11 @@
 
 This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
 
+## Running localhost
+
+`adb reverse tcp:8081 tcp:8081`
+`adb reverse tcp:3000 tcp:3000`
+
 ## Get started
 
 1. Install dependencies

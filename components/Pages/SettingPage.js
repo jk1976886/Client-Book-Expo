@@ -1,19 +1,14 @@
 import {Image, StyleSheet, Platform, Pressable, View, Text} from 'react-native';
-
-import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
 import {useContext, useEffect} from "react";
-import {ApiContext} from "@/hooks/useApi";
+import {ApiContext} from "../../hooks/useApi";
+import {UserContext} from "../../hooks/useUser";
 
-export default function HomeScreen() {
+export default function SettingPage() {
   
   // Instance Variables
-
-  const axios = require('axios').default;
-
+  
   const {api} = useContext(ApiContext);
+  const {user, signIn, signOut, signUp} = useContext(UserContext);
   
   // Methods
   
@@ -25,30 +20,25 @@ export default function HomeScreen() {
     //
     // })
     
-    api.signUp({user:{email: "test1@test.com", password: "Testing123"}}).then((newResult) => {
-      console.log("Jacky result", newResult)
-    }, (newError) => {
-      console.log("Jacky error", newError)
-
-    })
   }
   
   // Effects
   
   useEffect(() => {
     console.log("Jacky HomeScreen 1", api)
-    
-    click();
-    
   }, [api])
+  
+  useEffect(() => {
+    console.log("Jacky HomePage user changed", user)
+  }, [user])
   
   // Render
   
   return (
     <View style={styles.outerContainer}>
-      <Pressable onPress={click}>
+      <Pressable onPress={() => signIn('test1@test.com', 'Testing123')}>
         <View>
-          <Text>Jacky test</Text>
+          <Text>Jacky setting</Text>
         </View>
       </Pressable>
     </View>
@@ -57,6 +47,6 @@ export default function HomeScreen() {
 
 const styles = StyleSheet.create({
   outerContainer:{
-    paddingTop:30
+    // paddingTop:30
   }
 });

@@ -1,19 +1,18 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
-import { StatusBar } from 'expo-status-bar';
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import 'react-native-reanimated';
-
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { Drawer } from 'expo-router/drawer';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import {ApiProvider} from "../hooks/useApi";
+import {UserProvider} from "../hooks/useUser";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
+  // const colorScheme = useColorScheme();
   const [loaded] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
   });
@@ -30,13 +29,32 @@ export default function RootLayout() {
 
   return (
     <ApiProvider>
-      {/*<ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>*/}
-        <Stack>
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen name="+not-found" />
-        </Stack>
-        <StatusBar style="auto" />
-      {/*</ThemeProvider>*/}
+      <UserProvider>
+        {/*<ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>*/}
+        <GestureHandlerRootView style={{ flex: 1 }}>
+          <Drawer>
+            <Drawer.Screen
+              name="(stacks)"
+              options={{
+                headerShown: false,
+                drawerLabel: "Home",
+                headerTitle: "Home",
+                title: 'Home'
+              }}
+            />
+            
+            <Drawer.Screen
+              name="setting"
+              options={{
+                drawerLabel: "Setting",
+                headerTitle: "Setting",
+                title: "Setting",
+              }}
+            />
+          </Drawer>
+        </GestureHandlerRootView>
+        {/*</ThemeProvider>*/}
+      </UserProvider>
     </ApiProvider>
   );
 }
