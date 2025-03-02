@@ -5,7 +5,7 @@
   "scripts": {
     "start": "expo start",
     "reset-project": "node ./scripts/reset-project.js",
-    "android": "API_URL='http://localhost:3000' npx expo run:android",
+    "android": "API_URL='http://127.0.0.1:3000' npx expo run:android",
     "ios": "npx expo run:ios",
     "web": "expo start --web",
     "test": "jest --watchAll",
@@ -16,8 +16,11 @@
   },
   "dependencies": {
     "@expo/vector-icons": "^14.0.2",
+    "axios": "^1.6.8",
+    "humps": "^2.0.1",
     "@react-navigation/bottom-tabs": "^7.2.0",
     "@react-navigation/native": "^7.0.14",
+    "@jacky/client-book-api-client": "file:../Client-Book-Server/typescript-axios-client/jacky-client-book-api-client-0.0.2.tgz",
     "expo": "~52.0.37",
     "expo-blur": "~14.0.3",
     "expo-constants": "~17.0.7",
