@@ -5,6 +5,7 @@ import {UserContext} from "../../hooks/useUser";
 import {useLocalSearchParams} from "expo-router";
 import MaterialIcon from '@expo/vector-icons/MaterialIcons';
 import TextInput from "../UI/TextInput";
+import TextCard from "../UI/TextCard";
 
 export default function ClientPage() {
   
@@ -82,58 +83,75 @@ export default function ClientPage() {
         </View>
         :
         client ?
-          <View>
-            <Pressable onPress={() => setEditing(!editing)}>
-              <MaterialIcon style={{height: 24,
-                              width: 24,
-                              marginVertical: 8,
-                              marginHorizontal: 13,
-                            }}
-                            name={editing ? 'check' : 'edit'}
-                            size={24}/>
-            </Pressable>
+          <View style={{width:'100%', alignItems:'center', justifyContent:'center'}}>
+            <View style={styles.buttonsContainer}>
+              <Pressable onPress={() => setEditing(!editing)}>
+                <MaterialIcon style={{height: 24,
+                                width: 24,
+                                marginVertical: 8,
+                                marginHorizontal: 13,
+                              }}
+                              name={editing ? 'check' : 'edit'}
+                              size={24}/>
+              </Pressable>
+            </View>
             
-            <View style={{width:'100%', flexDirection:'row', overflow:'auto', flexWrap:'wrap'}}>
-              <TextInput style={styles.textInput}
-                         inputStyle={styles.input}
-                         label={'First Name'}
-                         value={firstName}
-                         editable={editing}
-                         onChangeText={setFirstName}
-              />
+            <TextCard style={styles.textCard}
+                      label={'Basic Info'}>
+              <View style={{width:'100%', flexDirection:'row', overflow:'auto', flexWrap:'wrap', alignItems:'center', justifyContent:'center'}}>
+                <TextInput style={styles.textInput}
+                           inputStyle={styles.input}
+                           label={'First Name'}
+                           value={firstName}
+                           editable={editing}
+                           onChangeText={setFirstName}
+                />
+                
+                <TextInput style={styles.textInput}
+                           inputStyle={styles.input}
+                           label={'Last Name'}
+                           value={lastName}
+                           editable={editing}
+                           onChangeText={setLastName}
+                />
+                
+                <TextInput style={styles.textInput}
+                           inputStyle={styles.input}
+                           label={'Phone'}
+                           value={phone}
+                           editable={editing}
+                           onChangeText={setPhone}
+                />
+                
+                <TextInput style={styles.textInput}
+                           inputStyle={styles.input}
+                           label={'Wechat'}
+                           value={wechat}
+                           editable={editing}
+                           onChangeText={setWechat}
+                />
+              </View>
               
-              <TextInput style={styles.textInput}
-                         inputStyle={styles.input}
-                         label={'Last Name'}
-                         value={lastName}
-                         editable={editing}
-                         onChangeText={setLastName}
-              />
-              
-              <TextInput style={styles.textInput}
+              <TextInput style={styles.emailInput}
                          inputStyle={styles.input}
                          label={'Email'}
                          value={email}
                          editable={editing}
                          onChangeText={setEmail}
               />
-              
-              <TextInput style={styles.textInput}
-                         inputStyle={styles.input}
-                         label={'Phone'}
-                         value={phone}
-                         editable={editing}
-                         onChangeText={setPhone}
-              />
-              
-              <TextInput style={styles.textInput}
-                         inputStyle={styles.input}
-                         label={'Wechat'}
-                         value={wechat}
-                         editable={editing}
-                         onChangeText={setWechat}
-              />
-            </View>
+            </TextCard>
+            
+            <TextCard label={'Sizes'}>
+              <Text>
+                Jacky add sizes here
+              </Text>
+            </TextCard>
+            
+            <TextCard label={'Events'}>
+              <Text>
+                Jacky add events here
+              </Text>
+            </TextCard>
           </View>
           :
           <View>
@@ -148,18 +166,22 @@ export default function ClientPage() {
 
 const styles = StyleSheet.create({
   input:{
-    borderColor:'#000000',
-    borderWidth: 1,
-    minWidth:200,
-    marginBottom:20
+  
   },
   title:{
     fontSize:20,
     marginBottom:20
   },
   textInput:{
-    margin:10,
-    width:'40%'
+    width:'45%',
+    padding:10
+  },
+  textCard:{
+    paddingBottom:10
+  },
+  emailInput:{
+    width:'90%',
+    padding:10
   },
   button:{
     backgroundColor:'#EFEFEF',
@@ -176,5 +198,9 @@ const styles = StyleSheet.create({
     height:'100%',
     alignItems:"center",
     justifyContent:"center"
+  },
+  buttonsContainer:{
+    flexDirection:'row',
+    flexWrap:'wrap'
   }
 });

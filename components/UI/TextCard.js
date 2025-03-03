@@ -1,7 +1,7 @@
 import {StyleSheet, View, Text, TextInput as RNTextInput} from 'react-native';
 import React from "react";
 
-export default function TextInput({label, style, value, editable, labelStyle, inputStyle, onChangeText}) {
+export default function TextCard({label, style, children, labelStyle}) {
   
   // Instance Variables
   
@@ -20,27 +20,21 @@ export default function TextInput({label, style, value, editable, labelStyle, in
         :
         null
       }
-      <RNTextInput style={[styles.input, inputStyle]}
-                   value={value}
-                   editable={editable}
-                   onChangeText={onChangeText}
-      />
+      {children}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  input:{
-    borderColor:'#000000',
-    borderWidth: 1,
-    width:'100%'
-  },
   label:{
-    // flex:1,
-    marginBottom:5
+    width:'100%',
+    color:'#F0F0F0',
+    backgroundColor:'#5C5C5C',
   },
   outerContainer:{
-    paddingBottom:10,
-    flexDirection:'column'
+    width:'100%',
+    backgroundColor:'#EFEFEF',
+    alignItems:"center",
+    justifyContent:"center",
   }
 });
