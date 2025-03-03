@@ -1,6 +1,7 @@
-import React, {useContext, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {createContext} from "react";
 import {ApiContext} from "./useApi";
+import {dataTypes, getData, setData, userKey} from "../helper/mmkv";
 
 export const UserContext = createContext(null);
 
@@ -13,7 +14,7 @@ export function UserProvider(props) {
   const signIn = (email, password) => {
     return api.signIn({user:{email: email, password: password}}).then((newResult) => {
       console.log("Jacky signIn", newResult)
-      setUser(newResult.data);
+      setLocalUser(newResult.data);
       return newResult;
     }, (newError) => {
       console.log("Jacky signIn error", newError)
@@ -24,7 +25,7 @@ export function UserProvider(props) {
   const signOut = () => {
     return api.signOut().then((newResult) => {
       console.log("Jacky signOut", newResult)
-      setUser(null);
+      clearLocalUser();
       return newResult;
     }, (newError) => {
       console.log("Jacky signOut error", newError)
@@ -35,13 +36,41 @@ export function UserProvider(props) {
   const signUp = (email, password) => {
     return api.signUp({user:{email: email, password: password}}).then((newResult) => {
       console.log("Jacky signUp", newResult)
-      setUser(newResult.data);
+      setLocalUser(newResult.data);
       return newResult;
     }, (newError) => {
       console.log("Jacky signUp error", newError)
       return newError;
     })
   }
+  
+  const reloadUser = () => {
+    api.currentUser().then((newResult) => {
+      setLocalUser(newResult.data);
+    },(newResult) => {
+      clearLocalUser();
+    })
+  }
+  
+  const setLocalUser = (aUser) => {
+    setUser(aUser);
+    setData(userKey, aUser);
+  }
+  
+  const clearLocalUser = () => {
+    setUser(null);
+    setData(userKey, null);
+  }
+  
+  useEffect(() => {
+    const storedUser = getData(userKey, dataTypes.object);
+    
+    if(storedUser && Object.keys(storedUser).length > 0 && storedUser.id){
+      setUser(storedUser);
+      // load user from server
+      reloadUser();
+    }
+  }, []);
   
   return <UserContext.Provider value={{user, signIn, signOut, signUp}}>
     {props.children}
