@@ -1,12 +1,13 @@
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
-import React, { useEffect } from 'react';
+import React, {useContext, useEffect} from 'react';
 import 'react-native-reanimated';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Drawer } from 'expo-router/drawer';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import {ApiProvider} from "../hooks/useApi";
-import {UserProvider} from "../hooks/useUser";
+import {UserContext, UserProvider} from "../hooks/useUser";
+import LoginPage from "../components/Pages/LoginPage";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -31,30 +32,42 @@ export default function RootLayout() {
     <ApiProvider>
       <UserProvider>
         {/*<ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>*/}
-        <GestureHandlerRootView style={{ flex: 1 }}>
-          <Drawer>
-            <Drawer.Screen
-              name="(stacks)"
-              options={{
-                headerShown: false,
-                drawerLabel: "Home",
-                headerTitle: "Home",
-                title: 'Home'
-              }}
-            />
-            
-            <Drawer.Screen
-              name="setting"
-              options={{
-                drawerLabel: "Setting",
-                headerTitle: "Setting",
-                title: "Setting",
-              }}
-            />
-          </Drawer>
-        </GestureHandlerRootView>
+        <ProtectedLayout/>
         {/*</ThemeProvider>*/}
       </UserProvider>
     </ApiProvider>
   );
+}
+
+const ProtectedLayout = () => {
+  const {user} = useContext(UserContext);
+  
+  return (
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      {user && user.id ?
+        <Drawer>
+          <Drawer.Screen
+            name="(stacks)"
+            options={{
+              headerShown: false,
+              drawerLabel: "Home",
+              headerTitle: "Home",
+              title: 'Home'
+            }}
+          />
+          
+          <Drawer.Screen
+            name="setting"
+            options={{
+              drawerLabel: "Setting",
+              headerTitle: "Setting",
+              title: "Setting",
+            }}
+          />
+        </Drawer>
+        :
+        <LoginPage/>
+      }
+    </GestureHandlerRootView>
+  )
 }
