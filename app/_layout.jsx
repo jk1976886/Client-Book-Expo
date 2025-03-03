@@ -4,10 +4,11 @@ import React, {useContext, useEffect} from 'react';
 import 'react-native-reanimated';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Drawer } from 'expo-router/drawer';
-import { useColorScheme } from '@/hooks/useColorScheme';
 import {ApiProvider} from "../hooks/useApi";
 import {UserContext, UserProvider} from "../hooks/useUser";
 import LoginPage from "../components/Pages/LoginPage";
+import {View, Text} from "react-native";
+import {DrawerContentScrollView, DrawerItem, DrawerItemList} from "@react-navigation/drawer";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -40,12 +41,23 @@ export default function RootLayout() {
 }
 
 const ProtectedLayout = () => {
-  const {user} = useContext(UserContext);
+  const {user, signOut} = useContext(UserContext);
   
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       {user && user.id ?
-        <Drawer>
+        <Drawer drawerContent={(props) => {
+          return (
+            <DrawerContentScrollView {...props}>
+              <DrawerItemList {...props} />
+              
+              <DrawerItem
+                label="Logout"
+                onPress={signOut}
+              />
+            </DrawerContentScrollView>
+          );
+        }}>
           <Drawer.Screen
             name="(stacks)"
             options={{
@@ -64,6 +76,12 @@ const ProtectedLayout = () => {
               title: "Setting",
             }}
           />
+          
+          <View>
+            <Text>
+              Jacky test
+            </Text>
+          </View>
         </Drawer>
         :
         <LoginPage/>
