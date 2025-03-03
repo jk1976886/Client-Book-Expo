@@ -22,6 +22,11 @@ export default function LoginPage() {
   
   return (
     <View style={styles.outerContainer}>
+      
+      <Text style={styles.title}>
+        Log In or Sign Up
+      </Text>
+      
       <TextInput
         style={styles.input}
         onChangeText={setEmail}
@@ -34,19 +39,40 @@ export default function LoginPage() {
         value={password}
       />
       
-      <Text onPress={() => signIn(email, password)}>
-        Sign In
-      </Text>
+      <View style={styles.button}>
+        <Text onPress={() => signIn(email, password)}>
+          Sign In
+        </Text>
+      </View>
       
-      <Text onPress={() => signUp(email, password)}>
-        Sign Up
-      </Text>
+      <View style={styles.button}>
+        <Text onPress={() => signUp(email, password)}>
+          Sign Up
+        </Text>
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  input:{
+    borderColor:'#000000',
+    borderWidth: 1,
+    minWidth:200,
+    marginBottom:20
+  },
+  title:{
+    fontSize:20,
+    marginBottom:20
+  },
+  button:{
+    backgroundColor:'#EFEFEF',
+    margin:10,
+    padding:10
+  },
   outerContainer:{
-    // paddingTop:30
+    height:'100%',
+    alignItems:"center",
+    justifyContent:"center"
   }
 });
