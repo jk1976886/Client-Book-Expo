@@ -59,12 +59,20 @@ const ProtectedLayout = () => {
           );
         }}>
           <Drawer.Screen
-            name="(stacks)"
+            name="index"
             options={{
-              headerShown: false,
               drawerLabel: "Home",
               headerTitle: "Home",
               title: 'Home'
+            }}
+          />
+          
+          <Drawer.Screen
+            name="client/[id]"
+            options={{
+              drawerItemStyle: {display: 'none', width:0, height:0},
+              headerTitle: "Client Info",
+              title: 'Client Info'
             }}
           />
           
