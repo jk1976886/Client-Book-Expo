@@ -7,7 +7,7 @@ import { Drawer } from 'expo-router/drawer';
 import {ApiProvider} from "../hooks/useApi";
 import {UserContext, UserProvider} from "../hooks/useUser";
 import LoginPage from "../components/Pages/LoginPage";
-import {View, Text} from "react-native";
+import {View, Text, ActivityIndicator} from "react-native";
 import {DrawerContentScrollView, DrawerItem, DrawerItemList} from "@react-navigation/drawer";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
@@ -41,7 +41,20 @@ export default function RootLayout() {
 }
 
 const ProtectedLayout = () => {
-  const {user, signOut} = useContext(UserContext);
+  const {user, signOut, loadingUser} = useContext(UserContext);
+  
+  useEffect(() => {
+    if(!loadingUser && user && user.id){
+      SplashScreen.hide();
+    }
+  }, [user, loadingUser])
+  
+  if (loadingUser) {
+    return <View style={{alignItems: 'center', justifyContent: 'center', flex:1}}>
+      {/*TODO Jacky make splash screen prettier*/}
+      <ActivityIndicator size="large"/>
+    </View>;
+  }
   
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>

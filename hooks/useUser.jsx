@@ -10,6 +10,7 @@ export function UserProvider(props) {
   const {api} = useContext(ApiContext);
   
   const [user, setUser] = useState(null);
+  const [loadingUser, setLoadingUser] = useState(true);
   
   const signIn = (email, password) => {
     return api.signIn({user:{email: email, password: password}}).then((newResult) => {
@@ -47,8 +48,10 @@ export function UserProvider(props) {
   const reloadUser = () => {
     api.currentUser().then((newResult) => {
       setLocalUser(newResult.data);
+      setLoadingUser(false)
     },(newResult) => {
       clearLocalUser();
+      setLoadingUser(false)
     })
   }
   
@@ -67,12 +70,13 @@ export function UserProvider(props) {
     
     if(storedUser && Object.keys(storedUser).length > 0 && storedUser.id){
       setUser(storedUser);
-      // load user from server
-      reloadUser();
+      setLoadingUser(false)
     }
+    // load user from server
+    reloadUser();
   }, []);
   
-  return <UserContext.Provider value={{user, signIn, signOut, signUp}}>
+  return <UserContext.Provider value={{user, signIn, signOut, signUp, loadingUser}}>
     {props.children}
   </UserContext.Provider>;
 }
